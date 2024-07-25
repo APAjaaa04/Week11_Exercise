@@ -1,6 +1,7 @@
 package com.example.advweek4nrp.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,9 @@ import com.example.advweek4nrp.databinding.FragmentStudentDetailBinding
 import com.example.advweek4nrp.databinding.FragmentStudentListBinding
 import com.example.advweek4nrp.viewmodel.DetailViewModel
 import com.example.advweek4nrp.viewmodel.ListViewModel
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
+import java.lang.Exception
 
 class StudentDetailFragment : Fragment() {
 
@@ -32,12 +36,29 @@ class StudentDetailFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
         var id = StudentDetailFragmentArgs.fromBundle(requireArguments()).id
         viewModel.fetch(id)
-        observeViewModel()
+        observeViewModel(view)
+
+
     }
 
-    fun observeViewModel() {
+    fun observeViewModel(view: View) {
         viewModel.studentLD.observe(viewLifecycleOwner, Observer {
             binding.student = it
+            val picasso = Picasso.Builder(view.context)
+            picasso.listener { picasso, uri, exception ->
+                exception.printStackTrace()
+            }
+            picasso.build().load(it.photoUrl).into(binding.imageView2, object:
+                Callback {
+                override fun onSuccess() {
+                    binding.progressImageDetail.visibility = View.INVISIBLE
+                    binding.imageView2.visibility = View.VISIBLE
+                }
+
+                override fun onError(e: Exception?) {
+                    Log.e("picasso_error", e.toString())
+                }
+            })
         })
     }
 }
