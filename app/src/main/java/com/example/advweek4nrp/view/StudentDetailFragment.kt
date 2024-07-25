@@ -30,16 +30,14 @@ class StudentDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
-        viewModel.fetch()
+        var id = StudentDetailFragmentArgs.fromBundle(requireArguments()).id
+        viewModel.fetch(id)
         observeViewModel()
     }
 
     fun observeViewModel() {
         viewModel.studentLD.observe(viewLifecycleOwner, Observer {
-            binding.txtStudentId.setText(it.id)
-            binding.txtStudentName.setText(it.name)
-            binding.txtDob.setText(it.bod)
-            binding.txtPhone.setText(it.phone)
+            binding.student = it
         })
     }
 }

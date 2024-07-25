@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-kapt")
 }
 
 android {
@@ -19,6 +20,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
     buildTypes {
         release {
@@ -39,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.android.volley:volley:1.2.1")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
